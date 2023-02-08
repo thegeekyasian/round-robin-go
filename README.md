@@ -25,7 +25,7 @@ type resource struct {
 
 ...
 
-rr, _ := roundrobin.New[resource](
+rr, _ := roundrobin.New(
     &resource{1, "resource-1"},
     &resource{2, "resource-2"},
     &resource{3, "resource-3"},
@@ -43,7 +43,7 @@ one := "One"
 two := "Two"
 three := "Three"
 
-rr, _ := roundrobin.New[string](&one, &two, &three)
+rr, _ := roundrobin.New(&one, &two, &three)
 
 rr.Next()	// One
 rr.Next()	// Two
@@ -53,11 +53,11 @@ rr.Next()	// One
 
 ### URLs
 ```go
-rr, _ := roundrobin.New[url.URL](
-    url.URL{Host: "192.168.0.1"},
-    url.URL{Host: "192.168.0.2"},
-    url.URL{Host: "192.168.0.3"},
-    url.URL{Host: "192.168.0.4"},
+rr, _ := roundrobin.New(
+    &url.URL{Host: "192.168.0.1"},
+    &url.URL{Host: "192.168.0.2"},
+    &url.URL{Host: "192.168.0.3"},
+    &url.URL{Host: "192.168.0.4"},
 )
 
 rr.Next() // 192.168.0.1
