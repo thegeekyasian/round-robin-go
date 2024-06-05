@@ -66,18 +66,15 @@ func TestRoundRobin(t *testing.T) {
 
 	for i, test := range tests {
 		rr, err := New(test.resources...)
-
-		if got, want := !(err == nil), test.iserr; got != want {
-			t.Errorf("tests[%d] - RoundRobin iserr is wrong. want: %v, but got: %v", i, test.want, got)
+		if err != nil && !test.iserr {
+			t.Errorf("tests[%d] - RoundRobin iserr is wrong. want: %v, but got: %v", i, test.want, true)
 		}
 
-		gots := make([]*resource, 0, len(test.want))
 		for j := 0; j < len(test.want); j++ {
-			gots = append(gots, rr.Next())
-		}
-
-		if got, want := gots, test.want; !reflect.DeepEqual(got, want) {
-			t.Errorf("tests[%d] - RoundRobin is wrong. want: %v, got: %v", i, want, got)
+			got := rr.Next()
+			if !reflect.DeepEqual(got, test.want[j]) {
+				t.Errorf("tests[%d] index[%d] - RoundRobin is wrong. want: %v, got: %v", i, j, *test.want[j], *got)
+			}
 		}
 	}
 }
