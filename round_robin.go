@@ -30,9 +30,8 @@ func (r *RoundRobin[O]) Next() *O {
 	n := atomic.AddUint32(&r.next, 1)
 
 	if int(n) > len(r.objects) {
-		atomic.StoreUint32(&r.next, 0)
+		atomic.StoreUint32(&r.next, 1)
 		n = 1
 	}
 	return r.objects[(int(n)-1)%len(r.objects)]
 }
-
